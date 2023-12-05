@@ -1,0 +1,11 @@
+---
+- hosts: "{{ hosts }}"
+  tasks:
+    - name: AWS Login
+      shell: ""
+
+    - name: Docker Pull
+      shell: "docker pull {{ ecr-url }}/{{ docker-img }}:latest"
+
+    - name: Docker Run
+      shell: "docker run --workdir=/app -p 5000:5000 {{ docker-img }}"
