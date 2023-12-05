@@ -2,7 +2,8 @@
 - hosts: "{{ hosts }}"
   tasks:
     - name: AWS Login
-      shell: ""
+      shell: "aws ecr get-login-password --region {{ ecr-region }} | docker login --username AWS --password-stdin {{ ecr-url }}"
+
 
     - name: Docker Pull
       shell: "docker pull {{ ecr-url }}/{{ docker-img }}:latest"
