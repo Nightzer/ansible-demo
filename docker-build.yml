@@ -1,0 +1,19 @@
+---
+- hosts: "{{ hosts }}"
+  - name: Git Pull
+  git: 
+    repo: "{{ repo-url }}"
+    dest: "{{ repo-dest }}"
+  any_errors_fatal: true
+
+  - name: Docker Build
+    shell: "cd {{ repo-dest }} && docker build -t {{ docker-image }} ./"
+
+  - name: Docker Tag
+    shell: "docker tag {{ docker-image }}:latest {{ ecr-url }}/{{ docker-image }}:latest"
+
+  - name: AWSLogin
+    shell: "aws ecr get-login-password --region {{ ecr-region }} | docker login --username AWS --password-stdin {{ ecr-url }}"
+
+  - name: Docker push ECR
+    shell: "docker push {{ ecr-url }}/{{ docker-image }}:latest"
