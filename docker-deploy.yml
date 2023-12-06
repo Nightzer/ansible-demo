@@ -2,11 +2,11 @@
 - hosts: "{{ hosts }}"
   tasks:
     - name: AWS Login
-      shell: "aws ecr get-login-password --region {{ ecr-region }} | docker login --username AWS --password-stdin {{ ecr-url }}"
+      shell: "aws ecr get-login-password --region {{ ecrRegion }} | docker login --username AWS --password-stdin {{ ecrUrl }}"
 
 
     - name: Docker Pull
-      shell: "docker pull {{ ecr-url }}/{{ docker-img }}:latest"
+      shell: "docker pull {{ ecrUrl }}/{{ dockerImg }}:latest"
 
     - name: Docker Run
-      shell: "docker run --workdir=/app -p 5000:5000 {{ docker-img }}"
+      shell: "docker run --workdir=/app -p 5000:5000 {{ dockerImg }}"
