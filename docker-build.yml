@@ -1,22 +1,23 @@
 ---
 - hosts: "{{ hosts }}"
-  - name: Git Pull
-    git: 
-      repo: "{{ repo-url }}"
-      dest: "{{ repo-dest }}"
-    any_errors_fatal: true
-
-  - name: Docker Build
-    shell: "cd {{ repo-dest }} && docker build -t {{ docker-img }} ./"
-
-  - name: Docker Tag
-    shell: "docker tag {{ docker-img }}:latest {{ ecr-url }}/{{ docker-img }}:latest"
-
-  - name: AWSLogin
-    shell: "aws ecr get-login-password --region {{ ecr-region }} | docker login --username AWS --password-stdin {{ ecr-url }}"
-
-  - name: Docker push ECR
-    shell: "docker push {{ ecr-url }}/{{ docker-img }}:latest"
-
-  - name: Docker Remove Image
-    shell: "docker rmi {{ docker-img }} --force"
+  tasks:
+    - name: Git Pull
+      git: 
+        repo: "{{ repo-url }}"
+        dest: "{{ repo-dest }}"
+      any_errors_fatal: true
+  
+    - name: Docker Build
+      shell: "cd {{ repo-dest }} && docker build -t {{ docker-img }} ./"
+  
+    - name: Docker Tag
+      shell: "docker tag {{ docker-img }}:latest {{ ecr-url }}/{{ docker-img }}:latest"
+  
+    - name: AWSLogin
+      shell: "aws ecr get-login-password --region {{ ecr-region }} | docker login --username AWS --password-stdin {{ ecr-url }}"
+  
+    - name: Docker push ECR
+      shell: "docker push {{ ecr-url }}/{{ docker-img }}:latest"
+  
+    - name: Docker Remove Image
+      shell: "docker rmi {{ docker-img }} --force"
