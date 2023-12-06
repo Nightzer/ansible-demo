@@ -1,10 +1,10 @@
 ---
 - hosts: "{{ hosts }}"
   - name: Git Pull
-  git: 
-    repo: "{{ repo-url }}"
-    dest: "{{ repo-dest }}"
-  any_errors_fatal: true
+    git: 
+      repo: "{{ repo-url }}"
+      dest: "{{ repo-dest }}"
+    any_errors_fatal: true
 
   - name: Docker Build
     shell: "cd {{ repo-dest }} && docker build -t {{ docker-img }} ./"
