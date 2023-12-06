@@ -3,21 +3,21 @@
   tasks:
     - name: Git Pull
       git: 
-        repo: "{{ repo-url }}"
-        dest: "{{ repo-dest }}"
+        repo: "{{ repoUrl }}"
+        dest: "{{ repoDest }}"
       any_errors_fatal: true
   
     - name: Docker Build
-      shell: "cd {{ repo-dest }} && docker build -t {{ docker-img }} ./"
+      shell: "cd {{ repoDest }} && docker build -t {{ dockerImg }} ./"
   
     - name: Docker Tag
-      shell: "docker tag {{ docker-img }}:latest {{ ecr-url }}/{{ docker-img }}:latest"
+      shell: "docker tag {{ dockerImg }}:latest {{ ecrUrl }}/{{ dockerImg }}:latest"
   
     - name: AWSLogin
-      shell: "aws ecr get-login-password --region {{ ecr-region }} | docker login --username AWS --password-stdin {{ ecr-url }}"
+      shell: "aws ecr get-login-password --region {{ ecrRegion }} | docker login --username AWS --password-stdin {{ ecrUrl }}"
   
     - name: Docker push ECR
-      shell: "docker push {{ ecr-url }}/{{ docker-img }}:latest"
+      shell: "docker push {{ ecrUrl }}/{{ dockerImg }}:latest"
   
     - name: Docker Remove Image
-      shell: "docker rmi {{ docker-img }} --force"
+      shell: "docker rmi {{ dockerImg }} --force"
